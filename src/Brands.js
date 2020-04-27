@@ -1,6 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Link } from "react-router-dom";
 
 const listBrands = gql`
   query GetBrands($vehicleType: String!) {
@@ -18,7 +19,7 @@ function Brands(props) {
     <div>
       {props.brands.map((brand) => (
         <p key={brand.sk}>
-          <a href={`/${extractIdFromSk(brand.sk)}/models`}>{brand.name}</a>
+          <Link to={`/${extractIdFromSk(brand.sk)}/models`}>{brand.name}</Link>
         </p>
       ))}
     </div>

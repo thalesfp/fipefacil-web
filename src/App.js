@@ -22,9 +22,9 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route exact={true} path="/" component={Brands} />
           <Route path="/:brandId/models/:modelId" component={YearModels} />
           <Route path="/:brandId/models" component={Models} />
+          <Route exact={true} path="/" component={Brands} />
         </Switch>
       </div>
     </Router>
