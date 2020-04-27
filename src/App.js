@@ -8,14 +8,12 @@ import Brands from "./Brands";
 import Models from "./Models";
 import YearModels from "./YearModels";
 
-import appSyncConfig from "../aws-exports";
-
 const client = new AWSAppSyncClient({
-  url: appSyncConfig.aws_appsync_graphqlEndpoint,
-  region: appSyncConfig.aws_appsync_region,
+  url: process.env.REACT_APP_APPSYNC_ENDPOINT,
+  region: process.env.REACT_APP_APPSYNC_REGION,
   auth: {
-    type: appSyncConfig.aws_appsync_authenticationType,
-    apiKey: appSyncConfig.aws_appsync_apiKey,
+    type: process.env.REACT_APP_APPSYNC_AUTHENTICATION_TYPE,
+    apiKey: process.env.REACT_APP_APPSYNC_API_KEY,
   },
 });
 
