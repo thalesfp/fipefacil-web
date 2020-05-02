@@ -44,6 +44,6 @@ export default graphql(listModels, {
     },
   }),
   props: ({ data }) => ({
-    models: data.getModels ? data.getModels : [],
+    models: data.getModels ?? [],
   }),
 })(Models);

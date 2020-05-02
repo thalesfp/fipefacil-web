@@ -14,10 +14,10 @@ const listBrands = gql`
 
 const extractIdFromSk = (sk) => sk.split("#")[1];
 
-function Brands(props) {
+function Brands({ brands }) {
   return (
     <div>
-      {props.brands.map((brand) => (
+      {brands.map((brand) => (
         <p key={brand.sk}>
           <Link to={`/${extractIdFromSk(brand.sk)}/models`}>{brand.name}</Link>
         </p>
@@ -34,6 +34,6 @@ export default graphql(listBrands, {
     },
   },
   props: ({ data }) => ({
-    brands: data.getBrands ? data.getBrands : [],
+    brands: data.getBrands ?? null,
   }),
 })(Brands);

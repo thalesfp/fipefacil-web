@@ -37,6 +37,6 @@ export default graphql(listYearModels, {
     },
   }),
   props: ({ data }) => ({
-    models: data.getYearModels ? data.getYearModels : [],
+    models: data.getYearModels ?? [],
   }),
 })(YearModels);
