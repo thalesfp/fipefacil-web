@@ -1,5 +1,4 @@
 import React from "react";
-import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { useHistory } from "react-router-dom";
 import Table from "@material-ui/core/Table";
@@ -14,19 +13,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
 import Loading from "../components/Loading";
+import Breadcrumbs from "../components/Breadcrumbs";
 
-const listBrands = gql`
-  query GetBrands($vehicleType: String!) {
-    getBrands(vehicleType: $vehicleType) {
-      sk
-      name
-    }
-  }
-`;
+import listBrands from "../queries/listBrands";
+
+import {
+  normalizeVehicleTypeToApi,
+  normalizeVehicleTypeFromApi,
+} from "../utils/normalizeVehicleType";
+import extractIdFromSk from "../utils/extractIdFromSk";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
-    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
   tableRow: {
@@ -34,16 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const extractIdFromSk = (sk) => sk.split("#")[1];
-
-function Brands({ brands }) {
-  const history = useHistory();
-  const classes = useStyles();
-
-  const handleOnClick = (brandSk) =>
-    history.push(`/${extractIdFromSk(brandSk)}/models`);
-
-  const sortedBrands = brands.sort((brandA, brandB) => {
+const sortBrands = (brands) =>
+  brands.sort((brandA, brandB) => {
     const brandAName = brandA.name.toUpperCase();
     const brandBName = brandB.name.toUpperCase();
 
@@ -56,31 +46,45 @@ function Brands({ brands }) {
     return 0;
   });
 
+function Brands({ match, brands }) {
+  const { vehicleType } = match.params;
+  const history = useHistory();
+  const classes = useStyles();
+
+  const handleOnClick = (brand) =>
+    history.push(`/${vehicleType}/${extractIdFromSk(brand.sk)}/modelos`);
+
   return (
     <>
       <NavBar hideBackButton />
       <Container>
-        {sortedBrands.length === 0 ? (
+        {brands.length === 0 ? (
           <Loading />
         ) : (
-          <TableContainer className={classes.tableContainer} component={Paper}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Marcas</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedBrands.map((brand) => (
-                  <TableRow className={classes.tableRow} key={brand.sk} hover>
-                    <TableCell onClick={() => handleOnClick(brand.sk)}>
-                      {brand.name}
-                    </TableCell>
+          <>
+            <Breadcrumbs vehicleType={vehicleType} />
+            <TableContainer
+              className={classes.tableContainer}
+              component={Paper}
+            >
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Marcas</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {brands.map((brand) => (
+                    <TableRow className={classes.tableRow} key={brand.sk} hover>
+                      <TableCell onClick={() => handleOnClick(brand)}>
+                        {brand.name}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
         )}
       </Container>
     </>
@@ -88,13 +92,20 @@ function Brands({ brands }) {
 }
 
 export default graphql(listBrands, {
-  options: {
+  options: ({
+    match: {
+      params: { vehicleType },
+    },
+  }) => ({
     fetchPolicy: "cache-and-network",
     variables: {
-      vehicleType: "cars",
+      vehicleType: normalizeVehicleTypeToApi(vehicleType),
     },
-  },
+  }),
   props: ({ data }) => ({
-    brands: data.getBrands ?? [],
+    vehicleType: data.variables?.vehicleType
+      ? normalizeVehicleTypeFromApi(data.variables.vehicleType)
+      : null,
+    brands: data.brands ? sortBrands(data.brands) : [],
   }),
 })(Brands);

@@ -1,5 +1,4 @@
 import React from "react";
-import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -13,83 +12,71 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
 import Loading from "../components/Loading";
+import Breadcrumbs from "../components/Breadcrumbs";
 
-const listYearModels = gql`
-  query GetYearModels($modelId: String!) {
-    getYearModels(modelId: $modelId) {
-      sk
-      currentPrice
-      fuelType
-      year
-    }
-  }
-`;
+import listYearModels from "../queries/listYearModels";
+
+import {
+  normalizeVehicleTypeToApi,
+  normalizeVehicleTypeFromApi,
+} from "../utils/normalizeVehicleType";
+import normalizeVehicleYear from "../utils/normalizeVehicleYear";
+import normalizeVehicleFuelType from "../utils/normalizeVehicleFuelType";
+import normalizeVehiclePrice from "../utils/normalizeVehiclePrice";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
-    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
 }));
 
-function convertFuelType(fuelId) {
-  switch (fuelId) {
-    case 1:
-      return "Gasolina";
-    case 2:
-      return "Álcool";
-    case 3:
-      return "Diesel";
-    default:
-      return fuelId;
-  }
-}
+const sortYearModels = (yearModels) =>
+  yearModels.sort((modelA, modelB) => modelB.year - modelA.year);
 
-function parseYear(year) {
-  return year === 32000 ? "Zero KM" : year;
-}
-
-function YearModels({ models }) {
+function YearModels({ vehicleType, brand, model, yearModels }) {
   const classes = useStyles();
-
-  const formatter = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
-
-  const sortedModels = models.sort(
-    (modelA, modelB) => modelB.year - modelA.year
-  );
 
   return (
     <>
       <NavBar />
       <Container>
-        {sortedModels.length === 0 ? (
+        {yearModels.length === 0 ? (
           <Loading />
         ) : (
-          <TableContainer className={classes.tableContainer} component={Paper}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Ano</TableCell>
-                  <TableCell>Combustivel</TableCell>
-                  <TableCell>Valor</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedModels.map((model) => (
-                  <TableRow key={model.sk} hover>
-                    <TableCell>{parseYear(model.year)}</TableCell>
-                    <TableCell>{convertFuelType(model.fuelType)}</TableCell>
-                    <TableCell>
-                      {formatter.format(model.currentPrice)}
-                    </TableCell>
+          <>
+            <Breadcrumbs
+              vehicleType={vehicleType}
+              brand={brand}
+              model={model}
+            />
+            <TableContainer
+              className={classes.tableContainer}
+              component={Paper}
+            >
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Ano</TableCell>
+                    <TableCell>Combustível</TableCell>
+                    <TableCell>Valor</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {yearModels.map((model) => (
+                    <TableRow key={model.sk} hover>
+                      <TableCell>{normalizeVehicleYear(model.year)}</TableCell>
+                      <TableCell>
+                        {normalizeVehicleFuelType(model.fuelType)}
+                      </TableCell>
+                      <TableCell>
+                        {normalizeVehiclePrice(model.currentPrice)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
         )}
       </Container>
     </>
@@ -99,15 +86,22 @@ function YearModels({ models }) {
 export default graphql(listYearModels, {
   options: ({
     match: {
-      params: { modelId },
+      params: { vehicleType, brandId, modelId },
     },
   }) => ({
     fetchPolicy: "cache-and-network",
     variables: {
+      vehicleType: normalizeVehicleTypeToApi(vehicleType),
+      brandId: `BRAND#${brandId}`,
       modelId: `MODEL#${modelId}`,
     },
   }),
   props: ({ data }) => ({
-    models: data.getYearModels ?? [],
+    vehicleType: data.variables?.vehicleType
+      ? normalizeVehicleTypeFromApi(data.variables.vehicleType)
+      : null,
+    brand: data.brand ?? {},
+    model: data.model ?? {},
+    yearModels: data.yearModels ? sortYearModels(data.yearModels) : [],
   }),
 })(YearModels);

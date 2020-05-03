@@ -22,9 +22,12 @@ function App() {
     <Router>
       <div>
         <Switch>
-          <Route path="/:brandId/models/:modelId" component={YearModels} />
-          <Route path="/:brandId/models" component={Models} />
-          <Route exact={true} path="/" component={Brands} />
+          <Route
+            path="/:vehicleType/:brandId/modelos/:modelId"
+            component={YearModels}
+          />
+          <Route path="/:vehicleType/:brandId/modelos" component={Models} />
+          <Route exact={true} path="/:vehicleType" component={Brands} />
         </Switch>
       </div>
     </Router>
