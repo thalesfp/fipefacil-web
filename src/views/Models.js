@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
+import Loading from "../components/Loading";
 
 const listModels = gql`
   query GetModels($brandId: String!) {
@@ -44,28 +45,45 @@ function Models({ match, models }) {
   const handleOnClick = (modelSk) =>
     history.push(`/${brandId}/models/${extractIdFromSk(modelSk)}`);
 
+  const sortedModels = models.sort((modelA, modelB) => {
+    const modelAName = modelA.name.toUpperCase();
+    const modelBName = modelB.name.toUpperCase();
+
+    if (modelAName > modelBName) {
+      return 1;
+    } else if (modelAName < modelBName) {
+      return -1;
+    }
+
+    return 0;
+  });
+
   return (
     <>
       <NavBar />
       <Container>
-        <TableContainer className={classes.tableContainer} component={Paper}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Modelo</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {models.map((model) => (
-                <TableRow className={classes.tableRow} key={model.sk} hover>
-                  <TableCell onClick={() => handleOnClick(model.sk)}>
-                    {model.name}
-                  </TableCell>
+        {sortedModels.length === 0 ? (
+          <Loading />
+        ) : (
+          <TableContainer className={classes.tableContainer} component={Paper}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Modelos</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {sortedModels.map((model) => (
+                  <TableRow className={classes.tableRow} key={model.sk} hover>
+                    <TableCell onClick={() => handleOnClick(model.sk)}>
+                      {model.name}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Container>
     </>
   );

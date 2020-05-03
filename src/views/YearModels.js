@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
+import Loading from "../components/Loading";
 
 const listYearModels = gql`
   query GetYearModels($modelId: String!) {
@@ -44,6 +45,10 @@ function convertFuelType(fuelId) {
   }
 }
 
+function parseYear(year) {
+  return year === 32000 ? "Zero KM" : year;
+}
+
 function YearModels({ models }) {
   const classes = useStyles();
 
@@ -52,30 +57,40 @@ function YearModels({ models }) {
     currency: "BRL",
   });
 
+  const sortedModels = models.sort(
+    (modelA, modelB) => modelB.year - modelA.year
+  );
+
   return (
     <>
       <NavBar />
       <Container>
-        <TableContainer className={classes.tableContainer} component={Paper}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Ano</TableCell>
-                <TableCell>Combustivel</TableCell>
-                <TableCell>Valor</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {models.map((model) => (
-                <TableRow key={model.sk} hover>
-                  <TableCell>{model.year}</TableCell>
-                  <TableCell>{convertFuelType(model.fuelType)}</TableCell>
-                  <TableCell>{formatter.format(model.currentPrice)}</TableCell>
+        {sortedModels.length === 0 ? (
+          <Loading />
+        ) : (
+          <TableContainer className={classes.tableContainer} component={Paper}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Ano</TableCell>
+                  <TableCell>Combustivel</TableCell>
+                  <TableCell>Valor</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {sortedModels.map((model) => (
+                  <TableRow key={model.sk} hover>
+                    <TableCell>{parseYear(model.year)}</TableCell>
+                    <TableCell>{convertFuelType(model.fuelType)}</TableCell>
+                    <TableCell>
+                      {formatter.format(model.currentPrice)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Container>
     </>
   );

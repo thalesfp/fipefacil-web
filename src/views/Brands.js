@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
+import Loading from "../components/Loading";
 
 const listBrands = gql`
   query GetBrands($vehicleType: String!) {
@@ -42,12 +43,27 @@ function Brands({ brands }) {
   const handleOnClick = (brandSk) =>
     history.push(`/${extractIdFromSk(brandSk)}/models`);
 
+  const sortedBrands = brands.sort((brandA, brandB) => {
+    const brandAName = brandA.name.toUpperCase();
+    const brandBName = brandB.name.toUpperCase();
+
+    if (brandAName > brandBName) {
+      return 1;
+    } else if (brandAName < brandBName) {
+      return -1;
+    }
+
+    return 0;
+  });
+
   return (
     <>
       <NavBar hideBackButton />
       <Container>
-        <Paper>
-          <TableContainer className={classes.tableContainer}>
+        {sortedBrands.length === 0 ? (
+          <Loading />
+        ) : (
+          <TableContainer className={classes.tableContainer} component={Paper}>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
@@ -55,7 +71,7 @@ function Brands({ brands }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {brands.map((brand) => (
+                {sortedBrands.map((brand) => (
                   <TableRow className={classes.tableRow} key={brand.sk} hover>
                     <TableCell onClick={() => handleOnClick(brand.sk)}>
                       {brand.name}
@@ -65,7 +81,7 @@ function Brands({ brands }) {
               </TableBody>
             </Table>
           </TableContainer>
-        </Paper>
+        )}
       </Container>
     </>
   );
