@@ -4,9 +4,9 @@ import { Rehydrated } from "aws-appsync-react";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Brands from "./Brands";
-import Models from "./Models";
-import YearModels from "./YearModels";
+import Brands from "./views/Brands";
+import Models from "./views/Models";
+import YearModels from "./views/YearModels";
 
 const client = new AWSAppSyncClient({
   url: process.env.REACT_APP_APPSYNC_ENDPOINT,
