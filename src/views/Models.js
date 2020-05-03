@@ -21,7 +21,7 @@ import {
   normalizeVehicleTypeToApi,
   normalizeVehicleTypeFromApi,
 } from "../utils/normalizeVehicleType";
-import extractIdFromSk from "../utils/extractIdFromSk";
+import { yearModelsRoute } from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -52,9 +52,7 @@ function Models({ vehicleType, brand, models }) {
 
   const handleOnClick = (model) =>
     history.push(
-      `/${vehicleType}/${extractIdFromSk(brand.sk)}/modelos/${extractIdFromSk(
-        model.sk
-      )}`
+      yearModelsRoute({ vehicleType, brandSk: brand.sk, modelSk: model.sk })
     );
 
   return (

@@ -4,7 +4,11 @@ import BreadcrumbsMaterial from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 
-import extractIdFromSk from "../utils/extractIdFromSk";
+import {
+  brandsRoute,
+  modelsRoute,
+  yearModelsRoute,
+} from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,7 +23,11 @@ function Breadcrumbs({ vehicleType, brand, model }) {
   return (
     <BreadcrumbsMaterial className={classes.container}>
       {vehicleType && (
-        <Link component={RouterLink} color="inherit" to={`/${vehicleType}`}>
+        <Link
+          component={RouterLink}
+          color="inherit"
+          to={brandsRoute({ vehicleType })}
+        >
           {capitalize(vehicleType)}
         </Link>
       )}
@@ -28,7 +36,7 @@ function Breadcrumbs({ vehicleType, brand, model }) {
         <Link
           component={RouterLink}
           color="inherit"
-          to={`/${vehicleType}/${extractIdFromSk(brand.sk)}/modelos`}
+          to={modelsRoute({ vehicleType, brandSk: brand.sk })}
         >
           {brand.name}
         </Link>
@@ -38,9 +46,11 @@ function Breadcrumbs({ vehicleType, brand, model }) {
         <Link
           component={RouterLink}
           color="inherit"
-          to={`/${vehicleType}/${extractIdFromSk(
-            brand.sk
-          )}/modelos/${extractIdFromSk(model.sk)}`}
+          to={yearModelsRoute({
+            vehicleType,
+            brandSk: brand.sk,
+            modelSk: model.sk,
+          })}
         >
           {model.name}
         </Link>
