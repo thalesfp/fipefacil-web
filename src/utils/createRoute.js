@@ -1,11 +1,11 @@
 import extractIdFromSk from "../utils/extractIdFromSk";
 
-export const brandsRoute = ({ vehicleType }) => `/${vehicleType}`;
+export const brandsRoute = ({ vehicleType }) => `/${vehicleType}/marcas`;
 
 export const modelsRoute = ({ vehicleType, brandSk }) =>
-  `/${vehicleType}/${extractIdFromSk(brandSk)}/modelos`;
+  `/${vehicleType}/marcas/${extractIdFromSk(brandSk)}/modelos`;
 
 export const yearModelsRoute = ({ vehicleType, brandSk, modelSk }) =>
-  `/${vehicleType}/${extractIdFromSk(brandSk)}/modelos/${extractIdFromSk(
+  `/${vehicleType}/marcas/${extractIdFromSk(brandSk)}/modelos/${extractIdFromSk(
     modelSk
   )}`;

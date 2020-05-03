@@ -2,7 +2,12 @@ import React from "react";
 import AWSAppSyncClient from "aws-appsync";
 import { Rehydrated } from "aws-appsync-react";
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import Brands from "./views/Brands";
 import Models from "./views/Models";
@@ -23,11 +28,15 @@ function App() {
       <div>
         <Switch>
           <Route
-            path="/:vehicleType/:brandId/modelos/:modelId"
+            path="/:vehicleType/marcas/:brandId/modelos/:modelId"
             component={YearModels}
           />
-          <Route path="/:vehicleType/:brandId/modelos" component={Models} />
-          <Route exact={true} path="/:vehicleType" component={Brands} />
+          <Route
+            path="/:vehicleType/marcas/:brandId/modelos"
+            component={Models}
+          />
+          <Route exact={true} path="/:vehicleType/marcas" component={Brands} />
+          <Redirect to="/carros/marcas" />
         </Switch>
       </div>
     </Router>

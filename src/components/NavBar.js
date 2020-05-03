@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
 }));
 
-function NavBar({ hideBackButton }) {
+function NavBar({ backLink, hideBackButton }) {
   const history = useHistory();
   const classes = useStyles();
 
@@ -33,7 +33,7 @@ function NavBar({ hideBackButton }) {
               edge="start"
               className={classes.menuButton}
               color="inherit"
-              onClick={() => history.goBack()}
+              onClick={() => history.push(backLink)}
             >
               <ArrowBack />
             </IconButton>

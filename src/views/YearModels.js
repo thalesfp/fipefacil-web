@@ -23,6 +23,7 @@ import {
 import normalizeVehicleYear from "../utils/normalizeVehicleYear";
 import normalizeVehicleFuelType from "../utils/normalizeVehicleFuelType";
 import normalizeVehiclePrice from "../utils/normalizeVehiclePrice";
+import { modelsRoute } from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -38,7 +39,7 @@ function YearModels({ vehicleType, brand, model, yearModels }) {
 
   return (
     <>
-      <NavBar />
+      <NavBar backLink={modelsRoute({ vehicleType, brandSk: brand.sk })} />
       <Container>
         {yearModels.length === 0 ? (
           <Loading />
