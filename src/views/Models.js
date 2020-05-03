@@ -21,11 +21,7 @@ import {
   normalizeVehicleTypeToApi,
   normalizeVehicleTypeFromApi,
 } from "../utils/normalizeVehicleType";
-import {
-  yearModelsRoute,
-  modelsRoute,
-  brandsRoute,
-} from "../utils/createRoute";
+import { brandsRoute, yearModelsRoute } from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
