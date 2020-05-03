@@ -79,6 +79,6 @@ export default graphql(listBrands, {
     },
   },
   props: ({ data }) => ({
-    brands: data.getBrands ?? null,
+    brands: data.getBrands ?? [],
   }),
 })(Brands);
