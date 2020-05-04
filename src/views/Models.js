@@ -78,10 +78,13 @@ function Models({ vehicleType, brand, models }) {
                 </TableHead>
                 <TableBody>
                   {models.map((model) => (
-                    <TableRow className={classes.tableRow} key={model.sk} hover>
-                      <TableCell onClick={() => handleOnClick(model)}>
-                        {model.name}
-                      </TableCell>
+                    <TableRow
+                      className={classes.tableRow}
+                      key={model.sk}
+                      onClick={() => handleOnClick(model)}
+                      hover
+                    >
+                      <TableCell>{model.name}</TableCell>
                       <TableCell align="right">
                         <ArrowForward color="disabled" />
                       </TableCell>
