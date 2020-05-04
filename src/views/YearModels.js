@@ -64,7 +64,7 @@ function YearModels({ vehicleType, brand, model, yearModels }) {
                 </TableHead>
                 <TableBody>
                   {yearModels.map((model) => (
-                    <TableRow key={model.sk} hover>
+                    <TableRow key={model.sk}>
                       <TableCell>{normalizeVehicleYear(model.year)}</TableCell>
                       <TableCell>
                         {normalizeVehicleFuelType(model.fuelType)}

@@ -14,6 +14,7 @@ import Container from "../components/Container";
 import NavBar from "../components/NavBar";
 import Loading from "../components/Loading";
 import Breadcrumbs from "../components/Breadcrumbs";
+import ArrowForward from "@material-ui/icons/ArrowForwardIos";
 
 import listModels from "../queries/listModels";
 
@@ -72,6 +73,7 @@ function Models({ vehicleType, brand, models }) {
                 <TableHead>
                   <TableRow>
                     <TableCell>Modelos</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -79,6 +81,9 @@ function Models({ vehicleType, brand, models }) {
                     <TableRow className={classes.tableRow} key={model.sk} hover>
                       <TableCell onClick={() => handleOnClick(model)}>
                         {model.name}
+                      </TableCell>
+                      <TableCell align="right">
+                        <ArrowForward color="disabled" />
                       </TableCell>
                     </TableRow>
                   ))}

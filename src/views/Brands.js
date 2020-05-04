@@ -9,6 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import ArrowForward from "@material-ui/icons/ArrowForwardIos";
 
 import Container from "../components/Container";
 import NavBar from "../components/NavBar";
@@ -71,13 +72,20 @@ function Brands({ match, brands }) {
                 <TableHead>
                   <TableRow>
                     <TableCell>Marcas</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {brands.map((brand) => (
-                    <TableRow className={classes.tableRow} key={brand.sk} hover>
-                      <TableCell onClick={() => handleOnClick(brand)}>
-                        {brand.name}
+                    <TableRow
+                      className={classes.tableRow}
+                      key={brand.sk}
+                      onClick={() => handleOnClick(brand)}
+                      hover
+                    >
+                      <TableCell>{brand.name}</TableCell>
+                      <TableCell align="right">
+                        <ArrowForward color="disabled" />
                       </TableCell>
                     </TableRow>
                   ))}
