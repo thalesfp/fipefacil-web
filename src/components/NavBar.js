@@ -1,12 +1,13 @@
 import React from "react";
 import { graphql } from "react-apollo";
+import { useHistory } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import ArrowBack from "@material-ui/icons/ArrowBack";
-import { useHistory } from "react-router-dom";
 
 import currentReference from "../queries/currentReference";
 import normalizeReferenceDate from "../utils/normalizeReferenceDate";
@@ -21,10 +22,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  loading: {
+    color: "white",
+  },
   offset: theme.mixins.toolbar,
 }));
 
-function NavBar({ currentReference, backLink, hideBackButton }) {
+function NavBar({ isLoading, currentReference, backLink, hideBackButton }) {
   const history = useHistory();
   const classes = useStyles();
 
@@ -45,9 +49,13 @@ function NavBar({ currentReference, backLink, hideBackButton }) {
           <Typography variant="h6" className={classes.title}>
             Fipe Fácil
           </Typography>
-          <Typography>
-            Referência&nbsp;<b>{normalizeReferenceDate(currentReference)}</b>
-          </Typography>
+          {isLoading ? (
+            <CircularProgress className={classes.loading} size={24} />
+          ) : (
+            <Typography>
+              Referência - <b>{normalizeReferenceDate(currentReference)}</b>
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
       <div className={classes.offset} />
@@ -60,6 +68,7 @@ export default graphql(currentReference, {
     fetchPolicy: "cache-and-network",
   }),
   props: ({ data }) => ({
+    isLoading: data.loading,
     currentReference: data.currentReference ? data.currentReference[0] : {},
   }),
 })(NavBar);
