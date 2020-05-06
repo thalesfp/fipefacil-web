@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   tableRow: {
     cursor: "pointer",
   },
+  arrowIcon: {
+    display: "flex",
+  },
 }));
 
 const sortModels = (models) =>
@@ -85,7 +88,7 @@ function Models({ vehicleType, brand, models }) {
                       hover
                     >
                       <TableCell>{model.name}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" className={classes.arrowIcon}>
                         <ArrowForward color="disabled" />
                       </TableCell>
                     </TableRow>
