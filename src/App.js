@@ -1,6 +1,5 @@
 import React from "react";
 import AWSAppSyncClient from "aws-appsync";
-import { Rehydrated } from "aws-appsync-react";
 import { ApolloProvider } from "react-apollo";
 import {
   BrowserRouter as Router,
@@ -46,9 +45,7 @@ function App() {
 function WithProvider() {
   return (
     <ApolloProvider client={client}>
-      <Rehydrated>
-        <App />
-      </Rehydrated>
+      <App />
     </ApolloProvider>
   );
 }

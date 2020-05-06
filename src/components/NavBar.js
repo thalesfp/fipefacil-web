@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
 }));
 
-function NavBar({ isLoading, currentReference, backLink, hideBackButton }) {
+function NavBar({ currentReference, backLink, hideBackButton }) {
   const history = useHistory();
   const classes = useStyles();
 
@@ -49,12 +49,12 @@ function NavBar({ isLoading, currentReference, backLink, hideBackButton }) {
           <Typography variant="h6" className={classes.title}>
             Fipe Fácil
           </Typography>
-          {isLoading ? (
-            <CircularProgress className={classes.loading} size={24} />
-          ) : (
+          {currentReference ? (
             <Typography>
               Referência - <b>{normalizeReferenceDate(currentReference)}</b>
             </Typography>
+          ) : (
+            <CircularProgress className={classes.loading} size={24} />
           )}
         </Toolbar>
       </AppBar>
@@ -68,7 +68,6 @@ export default graphql(currentReference, {
     fetchPolicy: "cache-and-network",
   }),
   props: ({ data }) => ({
-    isLoading: data.loading,
-    currentReference: data.currentReference ? data.currentReference[0] : {},
+    currentReference: data.currentReference ? data.currentReference[0] : null,
   }),
 })(NavBar);
