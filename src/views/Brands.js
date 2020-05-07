@@ -22,7 +22,7 @@ import {
   normalizeVehicleTypeToApi,
   normalizeVehicleTypeFromApi,
 } from "../utils/normalizeVehicleType";
-import { modelsRoute } from "../utils/createRoute";
+import { modelsRoute, homeRoute } from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
@@ -60,7 +60,7 @@ function Brands({ match, brands }) {
 
   return (
     <>
-      <NavBar hideBackButton />
+      <NavBar backLink={homeRoute()} />
       <Container>
         {brands.length === 0 ? (
           <Loading />

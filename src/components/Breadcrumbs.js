@@ -8,6 +8,7 @@ import {
   brandsRoute,
   modelsRoute,
   yearModelsRoute,
+  homeRoute,
 } from "../utils/createRoute";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,10 @@ function Breadcrumbs({ vehicleType, brand, model }) {
 
   return (
     <BreadcrumbsMaterial className={classes.container}>
+      <Link component={RouterLink} color="inherit" to={homeRoute()}>
+        Inicio
+      </Link>
+
       {vehicleType && (
         <Link
           component={RouterLink}

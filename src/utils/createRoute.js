@@ -1,5 +1,7 @@
 import extractIdFromSk from "../utils/extractIdFromSk";
 
+export const homeRoute = () => "/";
+
 export const brandsRoute = ({ vehicleType }) => `/${vehicleType}/marcas`;
 
 export const modelsRoute = ({ vehicleType, brandSk }) =>

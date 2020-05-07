@@ -1,13 +1,9 @@
 import React from "react";
 import AWSAppSyncClient from "aws-appsync";
 import { ApolloProvider } from "react-apollo";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import Home from "./views/Home";
 import Brands from "./views/Brands";
 import Models from "./views/Models";
 import YearModels from "./views/YearModels";
@@ -34,8 +30,8 @@ function App() {
             path="/:vehicleType/marcas/:brandId/modelos"
             component={Models}
           />
-          <Route exact={true} path="/:vehicleType/marcas" component={Brands} />
-          <Redirect to="/carros/marcas" />
+          <Route path="/:vehicleType/marcas" component={Brands} />
+          <Route exact={true} path="/" component={Home} />
         </Switch>
       </div>
     </Router>
