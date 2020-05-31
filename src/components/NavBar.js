@@ -1,17 +1,14 @@
-import React from "react";
-import { graphql } from "react-apollo";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
-import ArrowBack from "@material-ui/icons/ArrowBack";
 
-import currentReference from "../queries/currentReference";
 import normalizeReferenceDate from "../utils/normalizeReferenceDate";
+
+import api from "../api/api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,42 +26,49 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
 }));
 
-function NavBar({ currentReference, backLink, hideBackButton }) {
-  const history = useHistory();
+function NavBar() {
   const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const result = await api.getCurrentReference();
+
+        setData(result);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
-          {!hideBackButton && (
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              onClick={() => history.push(backLink)}
-            >
-              <ArrowBack />
-            </IconButton>
-          )}
           <Typography variant="h6" className={classes.title}>
             Fipe Fácil
           </Typography>
-          {currentReference ? (
+          {isLoading ? (
+            <CircularProgress className={classes.loading} size={24} />
+          ) : (
             <>
               <Hidden smUp>
-                <Typography>
-                  {normalizeReferenceDate(currentReference)}
-                </Typography>
+                <Typography>{normalizeReferenceDate(data)}</Typography>
               </Hidden>
               <Hidden xsDown>
                 <Typography>
-                  Referência - <b>{normalizeReferenceDate(currentReference)}</b>
+                  Referência - <b>{normalizeReferenceDate(data)}</b>
                 </Typography>
               </Hidden>
             </>
-          ) : (
-            <CircularProgress className={classes.loading} size={24} />
           )}
         </Toolbar>
       </AppBar>
@@ -73,11 +77,4 @@ function NavBar({ currentReference, backLink, hideBackButton }) {
   );
 }
 
-export default graphql(currentReference, {
-  options: () => ({
-    fetchPolicy: "cache-and-network",
-  }),
-  props: ({ data }) => ({
-    currentReference: data.currentReference ? data.currentReference[0] : null,
-  }),
-})(NavBar);
+export default NavBar;
