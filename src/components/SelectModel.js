@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SelectModel({ brandId, modelId, handleOnChange }) {
   const classes = useStyles();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [disableSelect, setDisableSelect] = useState(true);
   const [data, setData] = useState([]);
 
