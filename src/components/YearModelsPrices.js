@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SelectYearModel({ modelId }) {
+function YearModelsPrices({ modelId }) {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -78,4 +78,4 @@ function SelectYearModel({ modelId }) {
   );
 }
 
-export default SelectYearModel;
+export default YearModelsPrices;

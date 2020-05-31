@@ -11,7 +11,7 @@ function SelectVehicleType({ vehicleTypeSelected, handleOnChange }) {
         <Select
           id="select-vehicle-type"
           value={vehicleTypeSelected}
-          onChange={(event) => handleOnChange(event.target.value)}
+          onChange={(event) => handleOnChange(parseInt(event.target.value, 10))}
         >
           <option value={1}>Carro</option>
           <option value={2}>Moto</option>

@@ -7,7 +7,7 @@ import NavBar from "../components/NavBar";
 import SelectVehicleType from "../components/SelectVehicleType";
 import SelectBrand from "../components/SelectBrand";
 import SelectModel from "../components/SelectModel";
-import SelectYearModel from "../components/SelectYearModel";
+import YearModelsPrices from "../components/YearModelsPrices";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -23,20 +23,24 @@ function Home() {
   const [brandId, setBrandId] = useState(null);
   const [modelId, setModelId] = useState(null);
 
-  const handleVehicleTypeOnChange = (vehicleType) => {
+  const handleVehicleTypeOnChange = (vehicleTypeId) => {
     setModelId(null);
     setBrandId(null);
-    setVehicleType(vehicleType);
+    setVehicleType(vehicleTypeId);
   };
 
-  const handleBrandOnChange = (brandId) => {
+  const handleBrandOnChange = (event) => {
     setModelId(null);
-    setBrandId(brandId);
+    setBrandId(event.target.value);
   };
+
+  const handleModelOnChange = (event) => {
+    setModelId(event.target.value)
+  }
 
   return (
     <>
-      <NavBar hideBackButton />
+      <NavBar />
       <Container>
         <Paper className={classes.container}>
           <SelectVehicleType
@@ -51,10 +55,10 @@ function Home() {
           <SelectModel
             brandId={brandId}
             modelId={modelId}
-            handleOnChange={setModelId}
+            handleOnChange={handleModelOnChange}
           />
           {modelId && (
-            <SelectYearModel
+            <YearModelsPrices
               vehicleType={vehicleType}
               brandId={brandId}
               modelId={modelId}

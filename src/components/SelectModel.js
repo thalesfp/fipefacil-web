@@ -51,10 +51,10 @@ function SelectModel({ brandId, modelId, handleOnChange }) {
         <Select
           inputProps={{ id: "select-model" }}
           value={modelId ?? ""}
-          onChange={(event) => handleOnChange(event.target.value)}
+          onChange={handleOnChange}
           disabled={disableSelect}
         >
-          <option value="" />
+          <option value="" disabled />
           {data.map((model) => (
             <option key={model.sk} value={model.sk}>
               {model.name}

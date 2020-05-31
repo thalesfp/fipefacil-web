@@ -72,10 +72,10 @@ function SelectBrand({ vehicleType, brandId, handleOnChange }) {
         <Select
           inputProps={{ id: "select-brand" }}
           value={brandId ?? ""}
-          onChange={(event) => handleOnChange(event.target.value)}
+          onChange={handleOnChange}
           disabled={isLoading}
         >
-          <option value="" />
+          <option value="" disabled />
           <optgroup label="Marcas Populares">
             {data.popularBrands.map((brand) => (
               <option key={brand.sk} value={brand.sk}>
