@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const sortModels = (models) =>
+  models.sort((modelA, modelB) => modelA.name.localeCompare(modelB.name));
+
 function SelectModel({ brandId, modelId, handleOnChange }) {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +28,7 @@ function SelectModel({ brandId, modelId, handleOnChange }) {
       try {
         const result = await api.getModels(brandId);
 
-        setData(result);
+        setData(sortModels(result));
         setDisableSelect(false);
       } catch (error) {
         console.log(error);
