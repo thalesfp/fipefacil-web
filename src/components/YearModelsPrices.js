@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,13 +8,9 @@ import TableRow from "@material-ui/core/TableRow";
 
 import Loading from "./Loading";
 
-import api from "../api/api";
 import normalizeVehicleYear from "../utils/normalizeVehicleYear";
 import normalizeVehicleFuelType from "../utils/normalizeVehicleFuelType";
 import normalizeVehiclePrice from "../utils/normalizeVehiclePrice";
-
-const sortYearModels = (yearModels) =>
-  yearModels.sort((modelA, modelB) => modelB.year - modelA.year);
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,28 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function YearModelsPrices({ modelId }) {
+function YearModelsPrices({ isLoading, yearModels }) {
   const classes = useStyles();
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const result = await api.getYearModels(modelId);
-
-        setData(sortYearModels(result));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [modelId]);
 
   return (
     <div className={classes.container}>
@@ -64,7 +40,7 @@ function YearModelsPrices({ modelId }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {yearModels.map((row) => (
               <TableRow key={row.sk} classes={{ root: classes.row }}>
                 <TableCell>{normalizeVehicleYear(row.year)}</TableCell>
                 <TableCell>{normalizeVehicleFuelType(row.fuelType)}</TableCell>

@@ -53,7 +53,7 @@ function NavBar() {
           <Typography variant="h6" className={classes.title}>
             Fipe Fácil
           </Typography>
-          {isLoading ? (
+          {isLoading || !data ? (
             <CircularProgress className={classes.loading} size={24} />
           ) : (
             <>

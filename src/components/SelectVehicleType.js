@@ -1,9 +1,18 @@
 import React from "react";
-import Select from "@material-ui/core/NativeSelect";
+import { isMobile } from "react-device-detect";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import Select from "./Select";
 
 function SelectVehicleType({ vehicleTypeSelected, handleOnChange }) {
+  const options = [
+    { value: 1, label: "Carro" },
+    { value: 2, label: "Moto" },
+    { value: 3, label: "Caminhão" },
+  ];
+
   return (
     <div>
       <FormControl fullWidth={true}>
@@ -13,9 +22,17 @@ function SelectVehicleType({ vehicleTypeSelected, handleOnChange }) {
           value={vehicleTypeSelected}
           onChange={(event) => handleOnChange(parseInt(event.target.value, 10))}
         >
-          <option value={1}>Carro</option>
-          <option value={2}>Moto</option>
-          <option value={3}>Caminhão</option>
+          {options.map(({ value, label }) =>
+            isMobile ? (
+              <option key={label} value={value}>
+                {label}
+              </option>
+            ) : (
+              <MenuItem key={label} value={value}>
+                {label}
+              </MenuItem>
+            )
+          )}
         </Select>
       </FormControl>
     </div>
