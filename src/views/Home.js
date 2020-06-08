@@ -69,13 +69,10 @@ function Home() {
   });
 
   const handleVehicleTypeOnChange = (vehicleTypeId) => {
-    setModelId(null);
-    setBrandId(null);
     setVehicleType(vehicleTypeId);
   };
 
   const handleBrandOnChange = (event) => {
-    setModelId(null);
     setBrandId(event.target.value);
   };
 
@@ -85,6 +82,8 @@ function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setModelId(null);
+      setBrandId(null);
       setIsLoading({ brands: true, models: false, yearModels: false });
 
       try {
@@ -103,6 +102,7 @@ function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setModelId(null);
       setIsLoading({ brands: false, models: true, yearModels: false });
 
       try {
