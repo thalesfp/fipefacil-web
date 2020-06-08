@@ -12,6 +12,9 @@ function SelectVehicleType({ vehicleTypeSelected, handleOnChange }) {
         <InputLabel htmlFor="select-vehicle-type">Tipo de Veículo</InputLabel>
         <Select
           id="select-vehicle-type"
+          inputProps={{
+            "data-testid": "select-vehicle-type",
+          }}
           value={vehicleTypeSelected}
           onChange={(event) => handleOnChange(parseInt(event.target.value, 10))}
         >
