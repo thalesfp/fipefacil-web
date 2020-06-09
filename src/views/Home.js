@@ -68,16 +68,23 @@ function Home() {
     yearModels: false,
   });
 
+  const sendEventToGa = (name, value) => {
+    window.dataLayer.push({ [name]: value });
+  };
+
   const handleVehicleTypeOnChange = (vehicleTypeId) => {
     setVehicleType(vehicleTypeId);
+    sendEventToGa("vehicleType", vehicleTypeId);
   };
 
   const handleBrandOnChange = (event) => {
     setBrandId(event.target.value);
+    sendEventToGa("brandId", event.target.value);
   };
 
   const handleModelOnChange = (modelId) => {
     setModelId(modelId);
+    sendEventToGa("modelId", modelId);
   };
 
   useEffect(() => {
