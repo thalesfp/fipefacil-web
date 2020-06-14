@@ -53,7 +53,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm version prerelease --preid=$GITHUB_RUN_NUMBER
-          git add package.json
+          git add .
           git commit -m "Version bump: $GITHUB_RUN_NUMBER"
           git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
       - name: Deploy
