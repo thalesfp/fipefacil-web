@@ -28,15 +28,15 @@ function SelectBrand({ isLoading, brands, brandId, handleOnChange }) {
           {isLoading ? "Carregando marcas..." : "Marca"}
         </InputLabel>
         <Select
-          inputProps={{ id: "select-brand" }}
+          inputProps={{ id: "select-brand", "data-testid": "select-brand" }}
           value={brandId ?? ""}
-          onChange={handleOnChange}
+          onChange={(event) => handleOnChange(event.target.value)}
           disabled={isLoading}
         >
           <Option value="">&nbsp;</Option>
           {Object.keys(brands).map((key) =>
             isMobile ? (
-              <optgroup label={key}>
+              <optgroup label={key} key={key}>
                 {brands[key].map((brand) => (
                   <option key={brand.sk} value={brand.sk}>
                     {brand.name}

@@ -77,9 +77,9 @@ function Home() {
     sendEventToGa("vehicleType", vehicleTypeId);
   };
 
-  const handleBrandOnChange = (event) => {
-    setBrandId(event.target.value);
-    sendEventToGa("brandId", event.target.value);
+  const handleBrandOnChange = (brandId) => {
+    setBrandId(brandId);
+    sendEventToGa("brandId", brandId);
   };
 
   const handleModelOnChange = (modelId) => {
