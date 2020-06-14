@@ -29,5 +29,5 @@ jobs:
     - run: npm test
     - name: ZEIT Now Deployment
       uses: amondnet/now-deployment@v2.0.3
-        with:
-          zeit-token: TPV7NXwvKpqoQWyVxXkH2SJ4
+      with:
+        zeit-token: TPV7NXwvKpqoQWyVxXkH2SJ4
