@@ -2,7 +2,11 @@ import axios from "axios";
 
 import extractIdFromSk from "../utils/extractIdFromSk";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL1;
+
+// if (!BASE_URL) {
+throw new Error("Missing required environment variable!");
+// }
 
 const instance = axios.create({
   baseURL: BASE_URL,
