@@ -48,6 +48,11 @@ jobs:
       #   run: npm ci
       # - name: Build project
       #   run: npm run build
+      - name: Setup GIT
+        run: |
+          git switch -c master
+          git config --global user.email "thalesfp@gmail.com"
+          git config --global user.name "Thales Pereira"
       - name: Bump version
         run: npm version prerelease --preid=$GITHUB_RUN_NUMBER
       - name: Deploy
