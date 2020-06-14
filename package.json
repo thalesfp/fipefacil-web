@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "eject": "react-scripts eject"
+    "start": "REACT_APP_VERSION=$npm_package_version react-scripts start",
+    "build": "REACT_APP_VERSION=$npm_package_version react-scripts build",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test:coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll=false",
+    "eject": "react-scripts eject",
+    "deploy": "now"
   },
   "dependencies": {
-    "@material-ui/core": "^4.10.0",
+    "@material-ui/core": "^4.10.2",
     "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-device-detect": "^1.12.1",
@@ -18,11 +19,12 @@
     "react-scripts": "3.4.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^25.2.3",
-    "css-mediaquery": "^0.1.2"
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^10.2.1",
+    "@testing-library/user-event": "^11.4.2",
+    "@types/jest": "^26.0.0",
+    "css-mediaquery": "^0.1.2",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   },
   "eslintConfig": {
     "extends": "react-app"
