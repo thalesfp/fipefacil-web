@@ -60,4 +60,4 @@ jobs:
           assignDomain: "fipefacil.app"
         env:
           REACT_APP_ENV: production
-          REACT_APP_BASE_URL: https://fipefacil.thales.work}
+          REACT_APP_BASE_URL: https://fipefacil.thales.work
