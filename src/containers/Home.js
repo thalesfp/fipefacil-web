@@ -8,6 +8,7 @@ import SelectVehicleType from "../components/SelectVehicleType";
 import SelectBrand from "../components/SelectBrand";
 import SelectModel from "../components/SelectModel";
 import YearModelsPrices from "../components/YearModelsPrices";
+import AppVersion from "../components/AppVersion";
 
 import useReference from "../hooks/useReference";
 import useBrands from "../hooks/useBrands";
@@ -81,6 +82,7 @@ function Home() {
             />
           )}
         </Paper>
+        <AppVersion />
       </Container>
     </>
   );
