@@ -52,13 +52,12 @@ jobs:
           REACT_APP_ENV: production
           REACT_APP_BASE_URL: https://fipefacil.thales.work
         run: npm run build
-      - name: Deploy
-        uses: amondnet/vercel-action@v19.0.1+1
+      - uses: actions/vercel-deployment@0.5.1
+        with:
+          vercelToken: ${{ secrets.VERCEL_TOKEN }}
+          vercelOrgId: ${{ secrets.VERCEL_ORG_ID }}
+          vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
+          assignDomain: "fipefacil.app"
         env:
           REACT_APP_ENV: production
-          REACT_APP_BASE_URL: https://fipefacil.thales.work
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-args: "--prod "
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          REACT_APP_BASE_URL: https://fipefacil.thales.work}
