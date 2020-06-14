@@ -48,6 +48,8 @@ jobs:
       #   run: npm ci
       # - name: Build project
       #   run: npm run build
+      - name: Bump version
+        run: npm version prerelease --preid=${{ GITHUB_RUN_NUMBER }}
       - name: Deploy
         uses: xmflsct/action-vercel-deployment@v0.5.3
         with:
