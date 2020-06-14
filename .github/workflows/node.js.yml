@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,6 +26,15 @@ jobs:
     - run: npm ci
     - run: npm run build
     - run: npm test
+
+  release:
+    runs-on: ubuntu-latest
+    
+    if: ${{ github.ref == 'master' }}
+    
+    needs: build
+    
+    steps:
     - name: ZEIT Now Deployment
       uses: amondnet/now-deployment@v2.0.3
       with:
