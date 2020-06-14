@@ -9,6 +9,8 @@ import SelectBrand from "../components/SelectBrand";
 import SelectModel from "../components/SelectModel";
 import YearModelsPrices from "../components/YearModelsPrices";
 
+import normalizeReferenceDate from "../utils/normalizeReferenceDate";
+
 import api from "../api/api";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,11 +60,13 @@ function Home() {
   const [vehicleType, setVehicleType] = useState(1);
   const [brandId, setBrandId] = useState(null);
   const [modelId, setModelId] = useState(null);
+  const [reference, setReference] = useState(null);
   const [brands, setBrands] = useState({ popularBrands: [], otherBrands: [] });
   const [models, setModels] = useState([]);
   const [yearModels, setYearModels] = useState([]);
   const [disableModelSelect, setDisableModelSelect] = useState(false);
   const [isLoading, setIsLoading] = useState({
+    reference: false,
     brands: false,
     models: false,
     yearModels: false,
@@ -86,6 +90,24 @@ function Home() {
     setModelId(modelId);
     sendEventToGa("modelId", modelId);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const result = await api.getCurrentReference();
+
+        setReference(normalizeReferenceDate(result));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,7 +174,7 @@ function Home() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoading={isLoading.reference} reference={reference} />
       <Container maxWidth="sm">
         <Paper className={classes.container}>
           <SelectVehicleType

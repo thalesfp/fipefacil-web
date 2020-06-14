@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
-
-import normalizeReferenceDate from "../utils/normalizeReferenceDate";
-
-import api from "../api/api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,28 +19,9 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
 }));
 
-function NavBar() {
+function NavBar({ isLoading, reference }) {
   const classes = useStyles();
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const result = await api.getCurrentReference();
-
-        setData(result);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const displayReference = !isLoading && reference;
 
   return (
     <div className={classes.root}>
@@ -53,19 +30,19 @@ function NavBar() {
           <Typography variant="h6" className={classes.title}>
             Fipe Fácil
           </Typography>
-          {isLoading || !data ? (
-            <CircularProgress className={classes.loading} size={24} />
-          ) : (
+          {displayReference ? (
             <>
               <Hidden smUp>
-                <Typography>{normalizeReferenceDate(data)}</Typography>
+                <Typography>{reference}</Typography>
               </Hidden>
               <Hidden xsDown>
                 <Typography>
-                  Referência - <b>{normalizeReferenceDate(data)}</b>
+                  Referência - <b>{reference}</b>
                 </Typography>
               </Hidden>
             </>
+          ) : (
+            <CircularProgress className={classes.loading} size={24} />
           )}
         </Toolbar>
       </AppBar>

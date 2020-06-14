@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import Home from "./views/Home";
+import Home from "./containers/Home";
 import * as serviceWorker from "./serviceWorker";
 import theme from "./theme";
 
