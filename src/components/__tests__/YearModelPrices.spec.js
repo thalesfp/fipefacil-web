@@ -38,15 +38,15 @@ describe("YearModelPrices", () => {
 
       expect(screen.getByText("2018")).toBeDefined();
       expect(screen.getByText("Gasolina")).toBeDefined();
-      expect(screen.getByText("R$45,977.00")).toBeDefined();
+      expect(screen.getByText(/R\$\s?45,977.00/)).toBeDefined();
 
       expect(screen.getByText("2019")).toBeDefined();
       expect(screen.getByText("Álcool")).toBeDefined();
-      expect(screen.getByText("R$47,507.00")).toBeDefined();
+      expect(screen.getByText(/R\$\s?47,507.00/)).toBeDefined();
 
       expect(screen.getByText("Zero KM")).toBeDefined();
       expect(screen.getByText("Diesel")).toBeDefined();
-      expect(screen.getByText("R$50,421.00")).toBeDefined();
+      expect(screen.getByText(/R\$\s?50,421.00/)).toBeDefined();
     });
   });
 });
