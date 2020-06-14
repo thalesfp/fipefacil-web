@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
@@ -9,9 +9,10 @@ import SelectBrand from "../components/SelectBrand";
 import SelectModel from "../components/SelectModel";
 import YearModelsPrices from "../components/YearModelsPrices";
 
-import normalizeReferenceDate from "../utils/normalizeReferenceDate";
-
-import api from "../api/api";
+import useReference from "../hooks/useReference";
+import useBrands from "../hooks/useBrands";
+import useModels from "../hooks/useModels";
+import useYearModels from "../hooks/useYearModels";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,67 +22,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const organizeBrands = (allBrands = []) => {
-  const popularBrands = [];
-  const brands = [];
-
-  allBrands.forEach((brand) =>
-    brand.popular ? popularBrands.push(brand) : brands.push(brand)
-  );
-
-  return {
-    "Marcas Populares": sortBrands(popularBrands),
-    "Outras Marcas": sortBrands(brands),
-  };
-};
-
-const sortBrands = (brands) =>
-  brands.sort((brandA, brandB) => {
-    const brandAName = brandA.name.toUpperCase();
-    const brandBName = brandB.name.toUpperCase();
-
-    if (brandAName > brandBName) {
-      return 1;
-    } else if (brandAName < brandBName) {
-      return -1;
-    }
-
-    return 0;
-  });
-
-const sortModels = (models) =>
-  models.sort((modelA, modelB) => modelA.name.localeCompare(modelB.name));
-
-const sortYearModels = (yearModels) =>
-  yearModels.sort((modelA, modelB) => modelB.year - modelA.year);
-
 function Home() {
   const classes = useStyles();
   const [vehicleType, setVehicleType] = useState(1);
   const [brandId, setBrandId] = useState(null);
   const [modelId, setModelId] = useState(null);
-  const [reference, setReference] = useState(null);
-  const [brands, setBrands] = useState({ popularBrands: [], otherBrands: [] });
-  const [models, setModels] = useState([]);
-  const [yearModels, setYearModels] = useState([]);
-  const [disableModelSelect, setDisableModelSelect] = useState(false);
-  const [isLoading, setIsLoading] = useState({
-    reference: false,
-    brands: false,
-    models: false,
-    yearModels: false,
-  });
+
+  const { isLoading: isLoadingReference, reference } = useReference();
+  const { isLoading: isLoadingBrands, brands } = useBrands(vehicleType);
+  const { isLoading: isLoadingModels, models, disableModelSelect } = useModels(
+    brandId
+  );
+  const { isLoading: isLoadingYearModels, yearModels } = useYearModels(brandId);
 
   const sendEventToGa = (name, value) => {
     window.dataLayer.push({ [name]: value });
   };
 
   const handleVehicleTypeOnChange = (vehicleTypeId) => {
+    setBrandId(null);
+    setModelId(null);
+
     setVehicleType(vehicleTypeId);
     sendEventToGa("vehicleType", vehicleTypeId);
   };
 
   const handleBrandOnChange = (brandId) => {
+    setModelId(null);
+
     setBrandId(brandId);
     sendEventToGa("brandId", brandId);
   };
@@ -91,90 +59,9 @@ function Home() {
     sendEventToGa("modelId", modelId);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const result = await api.getCurrentReference();
-
-        setReference(normalizeReferenceDate(result));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setModelId(null);
-      setBrandId(null);
-      setIsLoading({ brands: true, models: false, yearModels: false });
-
-      try {
-        const result = await api.getBrands(vehicleType);
-
-        setBrands(organizeBrands(result));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading({ brands: false, models: false, yearModels: false });
-      }
-    };
-
-    fetchData();
-  }, [vehicleType]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setModelId(null);
-      setIsLoading({ brands: false, models: true, yearModels: false });
-
-      try {
-        const result = await api.getModels(brandId);
-
-        setModels(sortModels(result));
-        setDisableModelSelect(false);
-      } catch (error) {
-        console.log(error);
-        setDisableModelSelect(true);
-      } finally {
-        setIsLoading({ brands: false, models: false, yearModels: false });
-      }
-    };
-
-    if (brandId) {
-      fetchData();
-    } else {
-      setDisableModelSelect(true);
-    }
-  }, [brandId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading({ brands: false, models: false, yearModels: true });
-
-      try {
-        const result = await api.getYearModels(modelId);
-
-        setYearModels(sortYearModels(result));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading({ brands: false, models: false, yearModels: false });
-      }
-    };
-
-    fetchData();
-  }, [modelId]);
-
   return (
     <>
-      <NavBar isLoading={isLoading.reference} reference={reference} />
+      <NavBar isLoading={isLoadingReference} reference={reference} />
       <Container maxWidth="sm">
         <Paper className={classes.container}>
           <SelectVehicleType
@@ -182,21 +69,21 @@ function Home() {
             handleOnChange={handleVehicleTypeOnChange}
           />
           <SelectBrand
-            isLoading={isLoading.brands}
+            isLoading={isLoadingBrands}
             brands={brands}
             brandId={brandId}
             handleOnChange={handleBrandOnChange}
           />
           <SelectModel
             disableSelect={disableModelSelect}
-            isLoading={isLoading.models}
+            isLoading={isLoadingModels}
             models={models}
             modelId={modelId}
             handleOnChange={handleModelOnChange}
           />
           {modelId && (
             <YearModelsPrices
-              isLoading={isLoading.yearModels}
+              isLoading={isLoadingYearModels}
               yearModels={yearModels}
             />
           )}
