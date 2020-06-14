@@ -1,1 +1,1 @@
-export const isDev = () => process.env.REACT_APP_ENV === "development";
+export const isDev = () => process.env.NODE_ENV === "development";
