@@ -56,3 +56,4 @@ jobs:
           vercelProjectId: ${{ secrets.VERCEL_PROJECT_ID }}
           githubToken: ${{ secrets.DEPLOY_TOKEN }}
           assignDomain: "fipefacil.app"
+          buildOption: true
