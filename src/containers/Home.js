@@ -33,7 +33,7 @@ function Home() {
   const { isLoading: isLoadingModels, models, disableModelSelect } = useModels(
     brandId
   );
-  const { isLoading: isLoadingYearModels, yearModels } = useYearModels(brandId);
+  const { isLoading: isLoadingYearModels, yearModels } = useYearModels(modelId);
 
   const handleVehicleTypeOnChange = (vehicleTypeId) => {
     setModelId(null);
