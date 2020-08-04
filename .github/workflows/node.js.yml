@@ -23,6 +23,7 @@ jobs:
       - name: Build project
         env:
           REACT_APP_BASE_URL: https://fipefacil.thales.work
+          REACT_APP_BUILD: $GITHUB_RUN_NUMBER
         run: npm run build
       - name: Test
         run: npm test
