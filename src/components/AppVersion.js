@@ -18,7 +18,7 @@ function AppVersion() {
   return (
     <div className={classes.container}>
       FipeFácil.app - v{process.env.REACT_APP_VERSION} (
-      {isDev ? "alpha" : "beta"}) build: {process.env.REACT_APP_BUILD}
+      {isDev ? "alpha" : "beta"})
     </div>
   );
 }
