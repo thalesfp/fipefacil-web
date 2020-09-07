@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 
 import NavBar from "../components/NavBar";
 import SelectVehicleType from "../components/SelectVehicleType";
@@ -56,6 +57,14 @@ function Home() {
   return (
     <>
       <NavBar isLoading={isLoadingReference} reference={reference} />
+      <Container maxWidth="sm">
+        <Paper className={classes.container}>
+          <Typography variant="subtitle1">
+            Consulta rápida e atualizada de preços de carros, motos e caminhões
+            de acordo com a Tabela Fipe.
+          </Typography>
+        </Paper>
+      </Container>
       <Container maxWidth="sm">
         <Paper className={classes.container}>
           <SelectVehicleType

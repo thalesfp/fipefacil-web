@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontSize: "1.25rem",
+    fontWeight: 500,
+    lineHeight: "1.6",
+    letterSpacing: "0.0075em",
   },
   loading: {
     color: "white",
