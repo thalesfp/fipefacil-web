@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2),
   },
+  title: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function Home() {
@@ -67,6 +70,9 @@ function Home() {
       </Container>
       <Container maxWidth="sm">
         <Paper className={classes.container}>
+          <Typography variant="h6" className={classes.title}>
+            Consulta de preços:
+          </Typography>
           <SelectVehicleType
             vehicleTypeSelected={vehicleType}
             handleOnChange={handleVehicleTypeOnChange}
